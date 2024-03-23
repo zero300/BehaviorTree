@@ -12,6 +12,7 @@ public class BehaviorRunner : MonoBehaviour
     void Start()
     {
         tree = tree.Clone();
+        tree.Bind(); // 根據教學 這裡有綁定AI的東西
     }
 
     // Update is called once per frame

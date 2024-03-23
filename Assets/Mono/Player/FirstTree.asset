@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
-  position: {x: 560, y: 299}
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 458, y: 291}
   started: 0
   guid: 57ba578fc6b01dc4cbe4f16872f5ead1
   debugMessage: One
@@ -32,6 +36,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
   position: {x: 566, y: -120}
   started: 0
   guid: 9a763cfd1e40e8d4f83b4b8fca03b516
@@ -50,7 +58,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
-  position: {x: 726, y: 301}
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 644, y: 289}
   started: 0
   guid: a9c069d214e88974592a45a7d858a821
   duration: 1
@@ -68,7 +80,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
-  position: {x: 566, y: -13}
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 563, y: -7}
   started: 0
   guid: 730e67a6aa065404992af913da1893b5
   child: {fileID: 5075398258740076455}
@@ -94,6 +110,10 @@ MonoBehaviour:
   - {fileID: 6032028513268587600}
   - {fileID: -599532907518086265}
   - {fileID: -2924061262088266391}
+  blackboard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
 --- !u!114 &4995022706234450110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,7 +128,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
-  position: {x: 372, y: 291}
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 279, y: 290}
   started: 0
   guid: a199f11c5d79ed742b4dce9072be0fce
   duration: 1
@@ -125,8 +149,13 @@ MonoBehaviour:
   m_Name: SequenceNode
   m_EditorClassIdentifier: 
   state: 0
-  description: 
-  position: {x: 569, y: 103}
+  description: This is My TestThis is My TestThis is My TestThis is My TestThis is
+    My TestThis is My Test
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 562, y: 96}
   started: 0
   guid: 6cbd1f0917458aa46aaad7259c833a4b
   children:
@@ -149,7 +178,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   description: 
-  position: {x: 893, y: 296}
+  blackBoard:
+    deathTimes: 0
+    moveToPositions: {x: 0, y: 0, z: 0}
+    moveToObject: {fileID: 0}
+  position: {x: 816, y: 290}
   started: 0
   guid: 4a29b400a0560694db2a027c88507de2
   debugMessage: Two

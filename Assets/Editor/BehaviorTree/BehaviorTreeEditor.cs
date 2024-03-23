@@ -10,6 +10,10 @@ public class BehaviorTreeEditor : EditorWindow
 {
     BehaviorTreeView treeView;
     InspectorView inspectorView;
+    IMGUIContainer blackboardview;
+
+    SerializedObject treeObject;
+    SerializedProperty blackBoardProp;
 
     [MenuItem("DataStructure/BehaviorTreeEditor")]
     public static void OpenWindow()
@@ -43,6 +47,15 @@ public class BehaviorTreeEditor : EditorWindow
 
         treeView = root.Q<BehaviorTreeView>();
         inspectorView = root.Q<InspectorView>();
+        blackboardview = root.Q<IMGUIContainer>();
+        blackboardview.onGUIHandler = () =>
+        {
+            if (treeObject is null) return ;
+            treeObject.Update();
+            EditorGUILayout.PropertyField(blackBoardProp);
+            treeObject.ApplyModifiedProperties();
+        };
+
         treeView.OnNodeSelected = OnNodeSelectionChanged;
         OnSelectionChange();
     }
@@ -74,6 +87,8 @@ public class BehaviorTreeEditor : EditorWindow
    
     private void OnSelectionChange()
     {
+        // 當OnEnabled 跟 OnDisabled 時  
+        // 不知道為啥讀取不到該treeView
         if (treeView is null) {
             if (treeView is null) Debug.Log("Tree View is Null"); 
             return; 
@@ -83,18 +98,13 @@ public class BehaviorTreeEditor : EditorWindow
 
         if (!tree)
         {
-            if (Selection.activeObject)
+            // 原教學影片使用 active Object
+            // 但我這邊會報錯誤 Not Supported Error  ( GETCOMPONENT ) 
+            // 所以這邊改用 active GameObject
+            if (Selection.activeGameObject)
             {
-                try
-                {
-                    BehaviorRunner runner = Selection.activeObject.GetComponent<BehaviorRunner>();
-                    if (runner) tree = runner.tree;
-                }
-                catch (NotSupportedException e)
-                {
-                    // Debug.LogError(e.Message);
-                    return;
-                }
+                BehaviorRunner runner = Selection.activeGameObject.GetComponent<BehaviorRunner>();
+                if (runner) tree = runner.tree;
             }
         }
 
@@ -107,8 +117,18 @@ public class BehaviorTreeEditor : EditorWindow
         {
             if (tree && AssetDatabase.CanOpenAssetInEditor(tree.GetInstanceID())) treeView.PopulateTree(tree);
         }
+
+        if(tree != null)
+        {
+            treeObject = new SerializedObject(tree);
+            blackBoardProp = treeObject.FindProperty("blackboard");
+        }
     }
     void OnNodeSelectionChanged(NodeView nodeView) {
         inspectorView.UpdateSelection(nodeView);
+    }
+    private void OnInspectorUpdate()
+    {
+        treeView?.UpdateNodeStates();
     }
 }

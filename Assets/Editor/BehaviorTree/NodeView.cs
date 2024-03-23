@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using UnityEditor.Experimental.GraphView;
 using Behavior;
 using UnityEditor;
+using UnityEditor.UIElements;
 
 public class NodeView : Node
 {
@@ -25,6 +26,10 @@ public class NodeView : Node
         CreateInputPort();
         CreateOutputPort();
         SetUpClasses();
+
+        Label descriptionLabel = this.Q<Label>("description");
+        descriptionLabel.bindingPath = "description";
+        descriptionLabel.Bind(new SerializedObject(node) );
     }
 
     private void SetUpClasses()
@@ -108,5 +113,34 @@ public class NodeView : Node
     {
         base.OnSelected();
         OnNodeSelected?.Invoke(this);
+    }
+    public void SortChildren()
+    {
+        if(node is CompositeNode compositeNode) compositeNode.children.Sort(SortByHorizontalPos);
+    }
+    private int SortByHorizontalPos(BTNode left, BTNode right)
+    {
+        return left.position.x < right.position.x ? -1 : 1;
+    }
+    public void UpdateState()
+    {
+        RemoveFromClassList("running");
+        RemoveFromClassList("success");
+        RemoveFromClassList("failure");
+        if (!Application.isPlaying) return;
+        
+        switch (node.state)
+        {
+            case BTNodeState.Running:
+                if(node.started) AddToClassList("running");
+                break;
+            case BTNodeState.Success:
+                AddToClassList("success");
+                break;
+            case BTNodeState.Failure:
+                AddToClassList("failure");
+                break;
+        }
+        
     }
 }

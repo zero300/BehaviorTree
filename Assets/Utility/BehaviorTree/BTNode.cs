@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Behavior
 { 
@@ -13,10 +14,13 @@ namespace Behavior
     public abstract class BTNode : ScriptableObject
     {
         public BTNodeState state = BTNodeState.Running;
-        public string description = "";
+        [TextArea] public string description;
+        [HideInInspector] public BlackBoard blackBoard;
+        // [HideInInspector] public AiAgent // 教學有 但我沒看到
         [HideInInspector] public Vector2 position;
         [HideInInspector] public bool started = false;
         [HideInInspector] public string guid;
+
         public BTNodeState Update()
         {
             if (!started)

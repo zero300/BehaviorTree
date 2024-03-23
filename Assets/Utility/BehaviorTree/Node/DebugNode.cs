@@ -9,17 +9,18 @@ namespace Behavior
         public string debugMessage;
         protected override void OnStart()
         {
-            Debug.Log($"OnStart : {debugMessage}");
+            // Debug.Log($"OnStart : {debugMessage}");
         }
 
         protected override void OnStop()
         {
-            Debug.Log($"OnStop : {debugMessage}");
+            // Debug.Log($"OnStop : {debugMessage}");
         }
 
         protected override BTNodeState OnUpdate()
         {
-            Debug.Log($"OnUpdate : {debugMessage}");
+            Debug.Log($"DeathTimes : {blackBoard.deathTimes}");
+            blackBoard.deathTimes++ ;
             return BTNodeState.Success;
         }
     }

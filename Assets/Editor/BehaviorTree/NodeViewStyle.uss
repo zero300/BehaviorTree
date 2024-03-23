@@ -103,9 +103,8 @@
 }
 
 #description {
-    font-size: 10px;
-    -unity-text-align: upper-center;
-    -unity-font-style: normal;
+    max-width: 150px;
+    white-space: normal;
 }
 
 .root-node #input {
@@ -122,4 +121,25 @@
 
 .composite-node #input {
     background-color: rgb(62, 68, 209);
+}
+
+#node-state {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.running #node-state {
+    background-color: rgb(0, 20, 255);
+}
+
+.failure #node-state {
+    background-color: rgb(255, 132, 0);
+}
+
+.success #node-state {
+    background-color: rgb(93, 202, 45);
 }

@@ -49,7 +49,7 @@ public class BehaviorTreeView : GraphView
         DeleteElements(graphElements);
         graphViewChanged += OnGraphViewChanged;
 
-        if (tree.root is null)
+        if (this.tree.root is null)
         {
             tree.root = tree.CreateNode(typeof(RootNode)) as RootNode;
             EditorUtility.SetDirty(tree);
@@ -86,7 +86,6 @@ public class BehaviorTreeView : GraphView
                 if (item is NodeView nodeView) tree.RemoveNode (nodeView.node);
 
                 if (item is Edge edge){
-                    Debug.Log("Delete Edge");
                     NodeView parentNodeView = edge.output.node as NodeView;
                     NodeView childNodeView = edge.input.node as NodeView;
                     tree.RemoveChild(parentNodeView.node, childNodeView.node);
@@ -106,6 +105,15 @@ public class BehaviorTreeView : GraphView
                     tree.AddChild(parentNodeView.node, childNodeView.node);
                 } 
                 //if (item is Edge edge) tree.RemoveNode(edge.input, edge.output);
+            });
+        }
+
+        if(graphViewChange.movedElements != null)
+        {
+            nodes.ForEach(n =>
+            {
+                NodeView nodeView = n as NodeView;
+                nodeView.SortChildren();
             });
         }
         return graphViewChange;
@@ -150,37 +158,15 @@ public class BehaviorTreeView : GraphView
     /// </summary>
     private void DeleteSomething()
     {
-        var selections = selection.ToArray();
-        if(selections.Length != 0)
-        {
-            
-            for (int i = 0; i < selections.Length; i++)
-            {
-                if(selections[i] is NodeView nodeView)
-                {
-                    if (nodeView.node is RootNode) continue;
+        // 這個好ˊˇˋ
+        DeleteSelection();
+        //List<GraphElement> selectionList = new List<GraphElement>();
+        //selection.ForEach(e =>
+        //{
+        //    selectionList.Add(e as GraphElement);
+        //});
 
-                    RemoveElement(nodeView);
-                    tree.RemoveNode(nodeView.node);
-                    continue;
-                }
-
-                // 通過這邊刪除 Port 的孔 會顯示還有東西，
-                // 但實際上有刪掉
-                if (selections[i] is Edge edge)
-                {
-                    RemoveElement(edge);
-
-                    edge.output.Disconnect(edge);
-                    edge.input.Disconnect(edge);
-                    NodeView parentNodeView = edge.output.node as NodeView;
-                    NodeView childNodeView = edge.input.node as NodeView;
-                    tree.RemoveChild(parentNodeView.node, childNodeView.node);
-                    continue;
-                }
-            }
-        }
-        
+        //DeleteElements(selectionList);        
     }
 
     /// <summary>
@@ -201,5 +187,12 @@ public class BehaviorTreeView : GraphView
     private NodeView GetNodeViewByNode(BTNode btNode)
     {
         return GetNodeByGuid(btNode.guid) as NodeView;
+    }
+    public void UpdateNodeStates() {
+        nodes.ForEach(n =>
+        {
+            NodeView nodeView = n as NodeView;
+            nodeView.UpdateState();
+        });
     }
 }

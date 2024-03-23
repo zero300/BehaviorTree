@@ -14,6 +14,7 @@ namespace Behavior
         public BTNode root;
         public BTNodeState treeState = BTNodeState.Running;
         public List<BTNode> nodes = new List<BTNode>();
+        public BlackBoard blackboard;
         public BehaviorTree() { }
         public BTNodeState Update()
         {
@@ -56,7 +57,14 @@ namespace Behavior
 
             return list;
         }
-#if UNITY_EDITOR
+        public void Bind()
+        {
+            Traverse(root, n =>
+            {
+                n.blackBoard = blackboard;
+            });
+        }
+        #if UNITY_EDITOR
         public BTNode CreateNode(Type type) {
             var newNode = ScriptableObject.CreateInstance(type) as BTNode;
             newNode.name = type.Name;
@@ -65,9 +73,8 @@ namespace Behavior
             nodes.Add(newNode);
 
             if (!Application.isPlaying) AssetDatabase.AddObjectToAsset(newNode, this);
-
             Undo.RegisterCreatedObjectUndo(newNode, "Behavior Tree (CreateNode)");
-            AssetDatabase.SaveAssets();
+            if (!Application.isPlaying) AssetDatabase.SaveAssets();
             return newNode;
         }
         public void RemoveNode(BTNode node)
@@ -78,7 +85,7 @@ namespace Behavior
             
             // AssetDatabase.RemoveObjectFromAsset(node);
             Undo.DestroyObjectImmediate(node);
-            AssetDatabase.SaveAssets();
+            if (!Application.isPlaying) AssetDatabase.SaveAssets();
         }
         public void AddChild(BTNode parent, BTNode child) {
             if (parent is RootNode rootNode)
